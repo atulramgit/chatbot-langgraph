@@ -1,0 +1,40 @@
+# Environment variables and secrets (CRITICAL)
+.env
+.env.*
+!.env.example
+
+# Python virtual environments
+myenv/
+venv/
+.venv/
+env/
+ENV/
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Streamlit secrets & state
+.streamlit/secrets.toml
+
+# IDE and Editor settings
+.vscode/
+.idea/
+*.swp
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Build, distribution, and package caches
+build/
+dist/
+*.egg-info/
+.pytest_cache/
