@@ -29,6 +29,13 @@ __pycache__/
 *.swp
 *~
 
+# SQLite database files and runtime artifacts
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
 # Operating system files
 .DS_Store
 Thumbs.db
