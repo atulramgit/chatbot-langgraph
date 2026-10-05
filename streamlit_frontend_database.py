@@ -1,6 +1,6 @@
 import streamlit as st
-from langgraph_database_backend import chatbot, retrieve_all_threads
-from langchain_core.messages import HumanMessage
+from langgraph_tool_backend import chatbot, retrieve_all_threads
+from langchain_core.messages import HumanMessage, AIMessage
 import uuid
 
 #**********************************Utility functions**************************************
@@ -103,18 +103,19 @@ if user_input:
         "run_name" : "chat_turn"
     }
     
-    with st.chat_message('assistant'):
-        
-        def stream_generator():
-            for chunk, metadata in chatbot.stream(
-            {"messages": [HumanMessage(content=user_input)]},
-            config=CONFIG,
-            stream_mode="messages"
-        ):
-                text = parse_chunk_text(chunk)
-                if text:
-                    yield text
+    with st.chat_message("assistant"):
+        def ai_only_stream():
+            for message_chunk, metadata in chatbot.stream(
+                {"messages": [HumanMessage(content=user_input)]},
+                config=CONFIG,
+                stream_mode="messages"
+            ):
+                if isinstance(message_chunk, AIMessage):
+                    # yield only assistant tokens
+                    text = parse_chunk_text(message_chunk)
+                    if text:  # skip empty chunks
+                        yield text
 
-        ai_response = st.write_stream(stream_generator())
+        ai_message = st.write_stream(ai_only_stream())
         
-    st.session_state['message_history'].append({"role" : 'assistant', 'content' : ai_response})
+    st.session_state['message_history'].append({"role" : 'assistant', 'content' : ai_message})
